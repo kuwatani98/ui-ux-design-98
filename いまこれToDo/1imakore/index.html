@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>いまこれToDo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=M+PLUS+1:wght@400;770&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>いまこれToDo</h1>
+        </header>
+
+        <main id="app-screen">
+            <section id="home-screen" class="screen active">
+                <div class="task-display-area">
+                    <div class="task-circle-container">
+                        <svg class="task-progress-circle" viewBox="0 0 100 100">
+                            <circle class="circle-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="circle-progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="task-content">
+                            <div id="current-task-label" class="task-label"></div>
+                            <h2 id="current-task-title">タスクがありません</h2>
+                            <div id="subtask-list" class="subtask-list"></div>
+                        </div>
+                    </div>
+
+                    <div id="pomodoro-timer-bar" class="pomodoro-timer-bar">
+                        <div class="timer-segments"></div>
+                        <div id="pomodoro-countdown" class="pomodoro-countdown"></div>
+                    </div>
+                </div>
+
+                <div class="main-buttons">
+                    <button id="complete-task-btn" class="large-button complete-button"><i class="fas fa-check"></i> 完了</button>
+                    <button id="snooze-task-btn" class="large-button snooze-button"><i class="fas fa-clock"></i> あとでやる</button>
+                </div>
+
+                <div id="next-task-countdown-overlay" class="next-task-countdown-overlay">
+                    <p id="next-task-message"></p>
+                    <p id="countdown-timer"></p>
+                </div>
+            </section>
+
+            <section id="create-task-screen" class="screen">
+                <h2>新しいタスクを作成</h2>
+                <form id="create-task-form">
+                    <div class="form-group">
+                        <label for="new-task-title">タスク名</label>
+                        <input type="text" id="new-task-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-priority">優先度</label>
+                        <select id="new-task-priority">
+                            <option value="high">高</option>
+                            <option value="medium" selected>中</option>
+                            <option value="low">低</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-duration">所要時間目安 (分)</label>
+                        <input type="number" id="new-task-duration" min="1" value="25" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-buffer-time">予備時間 (分)</label>
+                        <input type="number" id="new-task-buffer-time" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-deadline-date">締め切り日時</label>
+                        <input type="date" id="new-task-deadline-date">
+                        <input type="time" id="new-task-deadline-time">
+                    </div>
+                    <div class="form-group">
+                        <label>ラベル</label>
+                        <div id="label-selection-area">
+                            </div>
+                        <div class="label-create-form">
+                            <input type="text" id="new-label-name" placeholder="新しいラベル名">
+                            <input type="text" id="new-label-icon" placeholder="アイコン (例: fas fa-book)">
+                            <button type="button" id="add-new-label-btn" class="small-button">ラベルを追加</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>手順 (サブタスク)</label>
+                        <div id="new-subtasks-list">
+                            </div>
+                        <button type="button" id="add-subtask-btn" class="small-button"><i class="fas fa-plus"></i> 手順を追加</button>
+                    </div>
+                    <button type="submit" class="large-button create-button">タスクを追加</button>
+                </form>
+            </section>
+
+            <section id="snoozed-screen" class="screen">
+                <h2>あとでやるタスク</h2>
+                <ul id="snoozed-task-list" class="task-list">
+                    </ul>
+                <p id="no-snoozed-tasks" class="empty-message">あとでやるタスクはありません。</p>
+            </section>
+
+            <section id="history-screen" class="screen">
+                <h2>タスク履歴</h2>
+                <ul id="history-task-list" class="task-list">
+                    </ul>
+                <p id="no-history-tasks" class="empty-message">完了したタスクはありません。</p>
+            </section>
+
+            <section id="settings-screen" class="screen">
+                <h2>設定</h2>
+                <div class="settings-group">
+                    <label for="pomodoro-enabled">ポモドーロモード</label>
+                    <input type="checkbox" id="pomodoro-enabled">
+                </div>
+                <div class="settings-group">
+                    <label for="auto-start-next-task">タスク自動開始 (5秒後)</label>
+                    <input type="checkbox" id="auto-start-next-task">
+                </div>
+                <div class="settings-group">
+                    <label for="motivational-mode-enabled">やる気スイッチモード</label>
+                    <input type="checkbox" id="motivational-mode-enabled">
+                </div>
+                <div class="settings-group">
+                    <label for="sound-effects-enabled">効果音</label>
+                    <input type="checkbox" id="sound-effects-enabled" checked>
+                </div>
+                <div class="settings-group">
+                    <label for="bgm-enabled">BGM</label>
+                    <input type="checkbox" id="bgm-enabled">
+                </div>
+                <div class="settings-group">
+                    <label for="pomodoro-work-duration">ポモドーロ作業時間 (分)</label>
+                    <input type="number" id="pomodoro-work-duration" min="1" value="25">
+                </div>
+                <div class="settings-group">
+                    <label for="pomodoro-break-duration">ポモドーロ休憩時間 (分)</label>
+                    <input type="number" id="pomodoro-break-duration" min="1" value="5">
+                </div>
+                <button id="save-settings-btn" class="small-button">設定を保存</button>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <button id="nav-home" class="nav-item active"><i class="fas fa-home"></i><br>ホーム</button>
+            <button id="nav-create" class="nav-item add-button"><i class="fas fa-plus-circle"></i><br>追加</button>
+            <button id="nav-snoozed" class="nav-item"><i class="fas fa-redo-alt"></i><br>あとでやる</button>
+            <button id="nav-history" class="nav-item"><i class="fas fa-history"></i><br>履歴</button>
+            <button id="nav-settings" class="nav-item"><i class="fas fa-cog"></i><br>設定</button>
+        </nav>
+    </div>
+
+    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-success-alert-2060.mp3"></audio>
+    <audio id="snooze-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-retro-game-over-1947.mp3"></audio>
+    <audio id="countdown-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-countdown-1972.mp3"></audio>
+    <audio id="pomodoro-break-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-alarm-2696.mp3"></audio>
+    <audio id="bgm" src="https://assets.mixkit.co/sfx/preview/mixkit-relaxing-loop-1249.mp3" loop></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
